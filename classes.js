@@ -1,6 +1,6 @@
 class Futebolada {
 
-    #isBeingScheduled;
+    #gameInProgress;
     #location;
     #date;
     #time;
@@ -8,7 +8,7 @@ class Futebolada {
     #playersMessageFormat;
     #playersCount;
 
-    #tba = "<tba>"
+    #tba = "<TBA>"
     #acceptedCommands = [
         '!futebolada', 
         '!apitofinal', 
@@ -26,34 +26,51 @@ class Futebolada {
 
     
     constructor() {
-        this.#initialState();
+        this.#reset();
     }
 
-    #initialState() {
-        this.#isBeingScheduled = false;
+    #reset() {
+        this.#gameInProgress = false;
         this.#date = this.#tba;
         this.#time = this.#tba;
         this.#location = this.#tba;
         this.#playersCount = 0;
         this.#players = {};
-        this.#playersMessageFormat = "";
     }
 
     #setDate(_date) {
         this.#date = _date;
     }
 
+    getDate() {
+        return this.#date;
+    }
+
     #setTime(_time) {
         this.#time = _time;
+    }
+
+    getTime() {
+        return this.#time;
     }
 
     #setLocation(_location) {
         this.#location = _location;
     }
 
-    #addPlayer(_playerName) {
+    getLocation() {
+        return this.#location;
+    }
 
-        console.log(_playerName);
+    getPlayersCount() {
+        return this.#playersCount;
+    }
+
+    getPlayers() {
+        return this.#players;
+    }
+
+    addPlayer(_playerName) {
 
         // Check if this.#players is undefined first in order to add player no. 1
         if (this.#players[Object.keys(this.#players).length] === undefined) {
@@ -92,33 +109,21 @@ class Futebolada {
 
     }
 
-    #convertPlayersToMessageFormat() {
-
-        let messageFormat = "";
-
-        for (let i = 1; i <= Object.keys(this.#players).length; i++) {
-            messageFormat = messageFormat.concat(i.toString(), " - ", this.#players[i], '\n')
-        }
-
-        this.#playersMessageFormat = messageFormat;
-
-    }
 
 
-    initFutebolada() {
+    initOrFinishFutebolada() {
 
-        if (this.#isBeingScheduled) {
-            return this.#gameAlreadyInProgressMessage();
+        if (!this.#gameInProgress) {
+            this.#gameInProgress = true;
         } else {
-            this.#isBeingScheduled = true;
-            return this.#gameStatusMessage();
+            this.#reset();
         }
 
     }
 
     finishFutebolada() {
 
-        if (this.#isBeingScheduled) {
+        if (this.#gameInProgress) {
             this.#initialState();
             return this.#finishMessage();
         } else {
@@ -143,7 +148,7 @@ class Futebolada {
 
     naovounaovai(_name) {
 
-        if (!this.#isBeingScheduled) {
+        if (!this.#gameInProgress) {
             return this.#noGameInProgressMessage();
         } else {
             if (Object.values(this.#players).includes(_name)) {
@@ -187,7 +192,7 @@ class Futebolada {
 
         console.log("GOT HEREEEEEEEEEEEEEEEEEEEEEEEEE")
 
-        if (!this.#isBeingScheduled) {
+        if (!this.#gameInProgress) {
     
             return this.#noGameInProgressMessage();
         } else {
@@ -255,17 +260,6 @@ class Futebolada {
 
     }
 
-    #gameAlreadyInProgressMessage() {
-
-        let msg = 
-        '⚽⚽⚽⚽⚽⚽⚽⚽⚽⚽⚽⚽⚽\n' +
-        '*Antes de começar a planear a próxima jornada é preciso jogar esta*\n' +
-        '!status para ver o atual plantel ou !apitofinal para recomeçar de novo\n' +
-        '⚽⚽⚽⚽⚽⚽⚽⚽⚽⚽⚽⚽⚽'
-
-        return msg;
-
-    }
 
     #noGameInProgressMessage() {
 
@@ -301,7 +295,7 @@ class Futebolada {
     }
     
     status() {
-        if (!this.#isBeingScheduled) {
+        if (!this.#gameInProgress) {
             return this.#noGameInProgressMessage();
         } else {
             return this.#gameStatusMessage();
@@ -309,7 +303,7 @@ class Futebolada {
     }
 
     hora(_hour) {
-        if (!this.#isBeingScheduled) {
+        if (!this.#gameInProgress) {
             return this.#noGameInProgressMessage();
         } else {
             this.#setTime(_hour);
@@ -329,7 +323,7 @@ class Futebolada {
     }
 
     dia(_day) {
-        if (!this.#isBeingScheduled) {
+        if (!this.#gameInProgress) {
             return this.#noGameInProgressMessage();
         } else {
             this.#setDate(_day);
@@ -350,7 +344,7 @@ class Futebolada {
     
     campo(_location) {
 
-        if (!this.#isBeingScheduled) {
+        if (!this.#gameInProgress) {
             return this.#noGameInProgressMessage();
         } else {
             this.#setLocation(_location);
@@ -375,7 +369,153 @@ class Futebolada {
         return this.#acceptedCommands;
     }
 
+    gameIsInProgress() {
+        return this.#gameInProgress
+    }
+
+    setGameInProgress() {
+        this.#gameInProgress = true;
+    }
 
 }
+
+class Responder {
+
+    #ftb;
+    #firstLine = '***[🤖 FutBOT ⚽]***\n\n'
+    #lastLine = '\n⚽⚽⚽⚽⚽⚽'
+
+    constructor(_ftb) {
+        this.#ftb = _ftb;
+    }
+
+    removeFirstWord(_str) {
+        const indexOfSpace = _str.indexOf(' ');
+        
+        if (indexOfSpace === -1) {
+            return '';
+        }
+
+        return _str.substring(indexOfSpace + 1);
+    }
+
+    #convertPlayersToMsgFormat(_playersObj) {
+
+        let playersForMsg = "";
+
+        for (let i = 1; i <= Object.keys(_playersObj).length; i++) {
+            playersForMsg = playersForMsg.concat(i.toString(), " - ", _playersObj[i], '\n')
+        }
+
+        return playersForMsg;
+
+    }
+
+    
+    #initGameMsg() {
+
+        if (this.#ftb.gameIsInProgress()) {
+            return this.#gameAlreadyInProgressMsg();
+        } else {
+            this.#ftb.initOrFinishFutebolada();
+            return this.#newGameMsg();
+        }
+
+    }
+
+
+    #gameAlreadyInProgressMsg() {
+        msg =
+        this.#firstLine +
+        '*Antes de começar a planear a próxima jornada é preciso jogar esta*\n\n' +
+        '!status para ver o atual plantel\n' + 
+        '!apitofinal para recomeçar de novo\n' +
+        '!help para tudo o resto\n'
+        this.#lastLine
+
+        return msg;
+    }
+
+    #newGameMsg() {
+        msg =
+        this.#firstLine +
+        '*🚩 ESTÁ ABERTA A ÉPOCA DE CONVOCATÓRIAS*\n\n' +
+        `*Dia:* ${this.#ftb.getDate()}\n` +
+        `*Hora:* ${this.#ftb.getTime()}\n` +
+        `*Estádio:* ${this.#ftb.getLocation()}\n\n` +
+        `*No. de Jogadores:* ${this.#ftb.getPlayersCount()}\n\n` +
+        `*Plantel:* ${this.#convertPlayersToMsgFormat(this.#ftb.getPlayers())}` +
+        this.#lastLine;
+
+        return msg;
+    }
+    
+
+
+    processMessage(_msg) {
+
+        let firstWordLowerCase = message.text.split(' ')[0].toLowerCase();
+        
+        if(this.#ftb.acceptedCommands().includes(firstWordLowerCase)) {
+            
+            switch(firstWordLowerCase) {
+
+                case '!futebolada': 
+                    toSend = ftb.initFutebolada();
+                    break;
+
+                case '!apitofinal':
+                    toSend = ftb.finishFutebolada();
+                    break;
+
+                case '!vou':
+                    let ownPlayerName = message.sender.pushname;
+                    console.log(ownPlayerName)
+                    toSend = ftb.vouvai(ownPlayerName);
+                    break;
+
+                case '!naovou':
+                    toSend = ftb.naovounaovai(message.sender.pushname);
+                    break;
+
+                case '!vai':
+                    let playerToGo = removeFirstWord(message.content);
+                    toSend = ftb.vouvai(playerToGo);
+                    break;
+
+                case '!naovai':
+                    let playerToRemove = removeFirstWord(message.content);
+                    toSend = ftb.naovounaovai(playerToRemove);
+                    break;
+
+                case '!help':
+                    console.log('################### INSIDE THE HELP ###############################')
+                    toSend = ftb.help();
+                    break;
+
+                case '!status':
+                    toSend = ftb.status();
+                    break;
+
+                case '!hora':
+                    let hour = removeFirstWord(message.content);
+                    toSend = ftb.hora(hour);
+                    break;
+
+                case '!dia':
+                    let day = removeFirstWord(message.content);
+                    toSend = ftb.dia(day);
+                    break;
+
+                case '!campo':
+                    let loc = removeFirstWord(message.content);
+                    toSend = ftb.campo(loc);
+                    break;
+            }
+
+    }
+
+}
+
 
 module.exports = {Futebolada};
