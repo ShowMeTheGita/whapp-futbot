@@ -21,7 +21,7 @@ class Futebolada {
         '!insulto',
         '!status',
         '!help',
-        '!location'
+        '!campo'
     ]
 
     
