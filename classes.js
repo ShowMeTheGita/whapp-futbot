@@ -1,12 +1,13 @@
 class Futebolada {
 
     #gameInProgress;
-    #location;
+
     #date;
     #time;
-    #players;
-    #playersMessageFormat;
+    #location;
+
     #playersCount;
+    #players;
 
     #tba = "<TBA>"
     #acceptedCommands = [
@@ -36,6 +37,14 @@ class Futebolada {
         this.#location = this.#tba;
         this.#playersCount = 0;
         this.#players = {};
+    }
+
+     gameIsInProgress() {
+        return this.#gameInProgress
+    }
+
+    setGameInProgress(_state) {
+        this.#gameInProgress = _state;
     }
 
     setDate(_date) {
@@ -100,7 +109,6 @@ class Futebolada {
     }
 
 
-
     initOrFinishFutebolada() {
 
         if (!this.#gameInProgress) {
@@ -111,18 +119,10 @@ class Futebolada {
 
     }
 
-
     acceptedCommands() {
         return this.#acceptedCommands;
     }
 
-    gameIsInProgress() {
-        return this.#gameInProgress
-    }
-
-    setGameInProgress(_state) {
-        this.#gameInProgress = _state;
-    }
 
 }
 
@@ -136,7 +136,7 @@ class Responder {
         this.#ftb = _ftb;
     }
 
-    removeFirstWord(_str) {
+    #removeFirstWord(_str) {
         const indexOfSpace = _str.indexOf(' ');
         
         if (indexOfSpace === -1) {
@@ -485,11 +485,11 @@ class Responder {
                     return this.#playerNotGoingMsgs(ownPlayerToRemove);
 
                 case '!vai':
-                    let playerToAdd = removeFirstWord(_msg.content);
+                    let playerToAdd = this.#removeFirstWord(_msg.content);
                     return this.#playerGoingMsgs(playerToAdd);
 
                 case '!naovai':
-                    let playerToRemove = removeFirstWord(_msg.content);
+                    let playerToRemove = this.#removeFirstWord(_msg.content);
                     return this.#playerNotGoingMsgs(playerToRemove);
 
                 case '!help':
@@ -499,19 +499,23 @@ class Responder {
                     return this.#checkStatus();
 
                 case '!hora':
-                    let hour = removeFirstWord(_msg.content);
+                    let hour = this.#removeFirstWord(_msg.content);
                     return this.#setHourMsgs(hour);
 
                 case '!dia':
-                    let day = removeFirstWord(_msg.content);
+                    let day = this.#removeFirstWord(_msg.content);
                     return this.#setDayMsgs(day);
 
                 case '!campo':
-                    let location = removeFirstWord(_msg.content);
+                    let location = this.#removeFirstWord(_msg.content);
                     return this.#setLocationMsgs(location);
+
+                //TO DO
+                // case 'insulto':
+                //    return
             }
 
-    }
+        }
 
     }
 }
