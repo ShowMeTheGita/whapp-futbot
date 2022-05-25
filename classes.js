@@ -81,8 +81,6 @@ class Futebolada {
 
     addPlayer(_playerName) {
 
-        console.log(this.#players);
-
         // Check if this.#players is undefined first in order to add player no. 1
         if (this.#players[Object.keys(this.#players).length] === undefined) {
             this.#players[1] = _playerName;
@@ -92,8 +90,6 @@ class Futebolada {
             this.#players[newPlayerNum] = _playerName;
             this.#playersCount++;
         }
-
-        console.log(this.#players);
 
     }
 
