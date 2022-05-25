@@ -1,24 +1,17 @@
-// Supports ES6
-// import { create, Whatsapp } from 'venom-bot';
+// Required imports
 const venom = require('venom-bot');
-const { Futebolada } = require("./futebolada.js");
 
+// Imports for custom created classes
+const { Futebolada, Responder } = require("./classes.js");
 const ftb = new Futebolada(); 
+const rsp = new Responder(ftb);
 
-function removeFirstWord(str) {
-  const indexOfSpace = str.indexOf(' ');
 
-  if (indexOfSpace === -1) {
-    return '';
-  }
-
-  return str.substring(indexOfSpace + 1);
-}
 
 
 venom
   .create({
-    session: 'session-name', //name of session
+    session: 'futbot', //name of session
     multidevice: false // for version not multidevice use false.(default: true)
   })
   .then((client) => start(client))
@@ -37,15 +30,8 @@ function start(client) {
 
     if (message.sender.id === '34602256248@c.us' ) {
 
-        let firstWordLowerCase = message.text.split(' ')[0].toLowerCase();
-        let toSend = "";
-
-            
-
-
-
       client
-        .sendText(message.from, toSend)
+        .sendText(message.from, rsp.processMessage(message))
         .then((result) => {
           console.log('Result: ', result); //return object success
         })
