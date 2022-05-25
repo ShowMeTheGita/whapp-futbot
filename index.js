@@ -28,6 +28,8 @@ function start(client) {
 
     }
 
+    console.log(message)
+
     if (message.sender.id === '34602256248@c.us' ) {
 
       client

@@ -81,6 +81,8 @@ class Futebolada {
 
     addPlayer(_playerName) {
 
+        console.log(this.#players);
+
         // Check if this.#players is undefined first in order to add player no. 1
         if (this.#players[Object.keys(this.#players).length] === undefined) {
             this.#players[1] = _playerName;
@@ -90,6 +92,8 @@ class Futebolada {
             this.#players[newPlayerNum] = _playerName;
             this.#playersCount++;
         }
+
+        console.log(this.#players);
 
     }
 
@@ -129,7 +133,7 @@ class Futebolada {
 class Responder {
 
     #ftb;
-    #firstLine = '***[🤖 FUTBOT ⚽]***\n\n'
+    #firstLine = '*[🤖 FUTBOT ⚽]*\n\n'
     #lastLine = '\n⚽⚽⚽⚽⚽⚽' // current message design choice is not using this 
 
     constructor(_ftb) {
@@ -162,7 +166,7 @@ class Responder {
     #playerNotGoingMsgs(_name) {
 
         if (!this.#ftb.gameIsInProgress()) {
-            return this.#noGameInProgressMessage();
+            return this.#noGameInProgressMsg();
         } else {
             if (Object.values(this.#ftb.getPlayers()).includes(_name)) {
                 this.#ftb.removePlayer(_name);
@@ -204,13 +208,11 @@ class Responder {
 
         let msg =
         this.#firstLine +
-        `❗ *ATUALIZAÇÃO AO 11 INICIAL* ❗\n`+
-        `*[${_name}] ${randomReason}*\n` +
+        `❗ *ATUALIZAÇÃO AO 11 INICIAL* ❗\n\n`+
+        `🟥 *${_name}* 🟥 ${randomReason}\n` +
         '\n' +
-        `*No. de Jogadores:* ${this.#playersCount}\n` +
-        `*Novo Plantel:*\n${this.#playersMessageFormat}` +
-        '\n' +
-        '⚽⚽⚽⚽⚽⚽⚽⚽⚽⚽⚽⚽⚽'
+        `*No. de Jogadores:* ${this.#ftb.getPlayersCount()}\n` +
+        `*Novo Plantel:*\n${this.#convertPlayersToMsgFormat(this.#ftb.getPlayers())}`
 
         return msg;
 
@@ -219,7 +221,7 @@ class Responder {
 
     #playerGoingMsgs(_name) {
 
-        if (!this.#ftb.gameInProgress()) {
+        if (!this.#ftb.gameIsInProgress()) {
             return this.#noGameInProgressMsg();
         } else {
             if (Object.values(this.#ftb.getPlayers()).includes(_name)) {
@@ -254,13 +256,11 @@ class Responder {
 
         let msg =
         this.#firstLine +
-        `❗ *ATUALIZAÇÃO AO 11 INICIAL* ❗\n` +
-        `*${randomCoach} CONFIRMA A PRESENÇA DE [${_name}] COMO TITULAR!*\n` +
+        `❗ *ATUALIZAÇÃO AO 11 INICIAL* ❗\n\n` +
+        `${randomCoach} confirma a presença de \n🌟 *${_name}* 🌟\n COMO TITULAR!\n` +
         '\n' +
-        `*No. de Jogadores:* ${this.#playersCount}\n` +
-        `*Novo Plantel:*\n${this.#playersMessageFormat}` +
-        '\n' +
-        '⚽⚽⚽⚽⚽⚽⚽⚽⚽⚽⚽⚽⚽'
+        `*No. de Jogadores:* ${this.#ftb.getPlayersCount()}\n` +
+        `*Novo Plantel:*\n${this.#convertPlayersToMsgFormat(this.#ftb.getPlayers())}`
 
         return msg;
 
@@ -295,7 +295,7 @@ class Responder {
 
         let msg = 
         this.#firstLine +
-        '❗❗*PI, PI, PIIIIIIIIIIII!!!!!*❗❗\n' +
+        '❗❗*PI, PI, PIIIIIIIIIIII!!!!!*❗❗\n\n' +
         'Partida terminada!\n' +
         '!futebolada para quando os nossos campeões estiverem em forma novamente\n'
 
@@ -329,7 +329,7 @@ class Responder {
 
     #gameAlreadyInProgressMsg() {
 
-        msg =
+        let msg =
         this.#firstLine +
         '*Antes de começar a planear a próxima jornada é preciso jogar esta*\n\n' +
         '!status para ver o atual plantel\n' + 
@@ -340,7 +340,7 @@ class Responder {
     }
 
     #newGameMsg() {
-        msg =
+        let msg =
         this.#firstLine +
         '*🚩 ESTÃO ABERTAS AS CONVOCATÓRIAS*\n\n' +
         `*Dia:* ${this.#ftb.getDate()}\n` +
@@ -401,7 +401,7 @@ class Responder {
     }
 
     #setDayMsgs(_day) {
-        if (!this.#ftb.getDate()) {
+        if (!this.#ftb.gameIsInProgress()) {
             return this.#noGameInProgressMsg();
         } else {
             this.#ftb.setDate(_day);
@@ -413,8 +413,8 @@ class Responder {
 
         let msg =
         this.#firstLine +
-        `❗ *ATUALIZAÇÃO PLANO DE JOGO* ❗\n` +
-        `Dia do kick-off: ${_day}\n`
+        `❗ *ATUALIZAÇÃO PLANO DE JOGO* ❗\n\n` +
+        `*Dia do kick-off*: ${_day}\n`
 
         return msg;
     }
@@ -433,15 +433,15 @@ class Responder {
 
         let msg =
         this.#firstLine +
-        `❗ *ATUALIZAÇÃO PLANO DE JOGO* ❗\n` +
-        `Hora para kick-off: ${_hour}\n`
+        `❗ *ATUALIZAÇÃO PLANO DE JOGO* ❗\n\n` +
+        `*Hora para kick-off*: ${_hour}\n`
 
         return msg;
     }
     
     #setLocationMsgs(_location) {
 
-        if (!this.#gameInProgress) {
+        if (!this.#ftb.gameIsInProgress()) {
             return this.#noGameInProgressMsg();
         } else {
             this.#ftb.setLocation(_location);
@@ -454,8 +454,8 @@ class Responder {
 
         let msg =
         this.#firstLine +
-        `❗ *ATUALIZAÇÃO PLANO DE JOGO* ❗\n` +
-        `Estádio: ${_location}\n`
+        `❗ *ATUALIZAÇÃO PLANO DE JOGO* ❗\n\n` +
+        `*Estádio*: ${_location}\n`
 
         return msg;
 
@@ -464,7 +464,7 @@ class Responder {
 
     processMessage(_msg) {
 
-        let firstWordLowerCase = message.text.split(' ')[0].toLowerCase();
+        let firstWordLowerCase = _msg.text.split(' ')[0].toLowerCase();
         
         if (this.#ftb.acceptedCommands().includes(firstWordLowerCase)) {
             
