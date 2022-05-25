@@ -6,7 +6,10 @@ const { Futebolada, Responder } = require("./classes.js");
 const ftb = new Futebolada(); 
 const rsp = new Responder(ftb);
 
-
+const whatsappChatsToRunIn = [
+  '351915226805-1555439720@g.us', // FutLolies
+  '34602256248@c.us' // Test chat
+]
 
 
 venom
@@ -22,15 +25,8 @@ venom
 function start(client) {
   client.onMessage((message) => {
 
-    if (message.isGroupMsg && message.chat.id === '351915226805-1555439720@g.us') {
 
-        // group chat code will go here
-
-    }
-
-    console.log(message)
-
-    if (message.sender.id === '34602256248@c.us' ) {
+    if (whatsappChatsToRunIn.includes(message.sender.id) || whatsappChatsToRunIn.includes(message.chat.id) ) {
 
       client
         .sendText(message.from, rsp.processMessage(message))

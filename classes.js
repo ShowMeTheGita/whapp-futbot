@@ -457,6 +457,26 @@ class Responder {
 
     }
 
+    #insultSomeoneMsg(_attacker, _insulted) {
+
+        let insults = [
+            `O *${_attacker}* quer que vás para o caralho *${_insulted}*`,
+            `De acordo com o *${_attacker}*, o *${_insulted}* está a armar-se em conas outras vez`,
+            `*${_attacker}* afia a faca para chinar *${_insulted}* no olho`,
+            `O *${_attacker}* quer que tu te fodas *${_insulted}*`,
+            `Segundo *${_attacker}*, o *${_insulted}* não saltou e é portanto lampião`
+        ]
+
+        let randomInsult = insults[Math.floor(Math.random() * insults.length)];
+
+        let msg =
+        this.#firstLine +
+        randomInsult
+
+        return msg;
+
+    }
+
 
     processMessage(_msg) {
 
@@ -506,9 +526,11 @@ class Responder {
                     let location = this.#removeFirstWord(_msg.content);
                     return this.#setLocationMsgs(location);
 
-                //TO Do
-                // case 'insulto':
-                //    return
+                case '!insulto':
+                    let attacker = _msg.sender.pushname;
+                    let insulted = this.#removeFirstWord(_msg.content);
+                    return this.#insultSomeoneMsg(attacker, insulted);
+
             }
 
         }
