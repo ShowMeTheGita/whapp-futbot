@@ -506,7 +506,7 @@ class Responder {
                     let location = this.#removeFirstWord(_msg.content);
                     return this.#setLocationMsgs(location);
 
-                //TO DO
+                //TO Do
                 // case 'insulto':
                 //    return
             }
