@@ -11,8 +11,8 @@ class Futebolada {
 
     #tba = "<TBA>"
     #acceptedCommands = [
-        '!futebolada', 
-        '!apitofinal', 
+        '!futebolada',
+        '!apitofinal',
         '!vou',
         '!naovou',
         '!vai',
@@ -25,7 +25,7 @@ class Futebolada {
         '!campo'
     ]
 
-    
+
     constructor() {
         this.#reset();
     }
@@ -39,7 +39,7 @@ class Futebolada {
         this.#players = {};
     }
 
-     gameIsInProgress() {
+    gameIsInProgress() {
         return this.#gameInProgress
     }
 
@@ -99,7 +99,7 @@ class Futebolada {
 
         // Reorder this.#players keys
         for (let i = playerNumber; i < Object.keys(this.#players).length; i++) {
-	        Object.defineProperty(this.#players, i, Object.getOwnPropertyDescriptor(this.#players, i+1));
+            Object.defineProperty(this.#players, i, Object.getOwnPropertyDescriptor(this.#players, parseInt(i) + 1));
         }
 
         // remove the last index after reordering
@@ -138,7 +138,7 @@ class Responder {
 
     #removeFirstWord(_str) {
         const indexOfSpace = _str.indexOf(' ');
-        
+
         if (indexOfSpace === -1) {
             return '';
         }
@@ -176,12 +176,12 @@ class Responder {
 
     #noSuchPlayerPresentMsg(_name) {
 
-        let msg = 
-        this.#firstLine +
-        `*[${_name}] AINDA NÃO ESTÁ no plantel!*\n` +
-        '!vou para fazeres para da equipa vencedora\n' + 
-        '!vai <nome> para aquela menina\n' + 
-        '!help para veres tudo\n'
+        let msg =
+            this.#firstLine +
+            `*[${_name}] AINDA NÃO ESTÁ no plantel!*\n` +
+            '!vou para fazeres para da equipa vencedora\n' +
+            '!vai <nome> para aquela menina\n' +
+            '!help para veres tudo\n'
 
         return msg
 
@@ -203,12 +203,12 @@ class Responder {
         let randomReason = giveUpReasons[Math.floor(Math.random() * giveUpReasons.length)];
 
         let msg =
-        this.#firstLine +
-        `❗ *ATUALIZAÇÃO AO 11 INICIAL* ❗\n\n`+
-        `🟥 *${_name}* 🟥 ${randomReason}\n` +
-        '\n' +
-        `*No. de Jogadores:* ${this.#ftb.getPlayersCount()}\n` +
-        `*Novo Plantel:*\n${this.#convertPlayersToMsgFormat(this.#ftb.getPlayers())}`
+            this.#firstLine +
+            `❗ *ATUALIZAÇÃO AO 11 INICIAL* ❗\n\n` +
+            `🟥 *${_name}* 🟥 ${randomReason}\n` +
+            '\n' +
+            `*No. de Jogadores:* ${this.#ftb.getPlayersCount()}\n` +
+            `*Novo Plantel:*\n${this.#convertPlayersToMsgFormat(this.#ftb.getPlayers())}`
 
         return msg;
 
@@ -251,12 +251,12 @@ class Responder {
         let randomCoach = coaches[Math.floor(Math.random() * coaches.length)];
 
         let msg =
-        this.#firstLine +
-        `❗ *ATUALIZAÇÃO AO 11 INICIAL* ❗\n\n` +
-        `${randomCoach} confirma a presença de \n🌟 *${_name}* 🌟\n COMO TITULAR!\n` +
-        '\n' +
-        `*No. de Jogadores:* ${this.#ftb.getPlayersCount()}\n` +
-        `*Novo Plantel:*\n${this.#convertPlayersToMsgFormat(this.#ftb.getPlayers())}`
+            this.#firstLine +
+            `❗ *ATUALIZAÇÃO AO 11 INICIAL* ❗\n\n` +
+            `${randomCoach} confirma a presença de \n🌟 *${_name}* 🌟\n COMO TITULAR!\n` +
+            '\n' +
+            `*No. de Jogadores:* ${this.#ftb.getPlayersCount()}\n` +
+            `*Novo Plantel:*\n${this.#convertPlayersToMsgFormat(this.#ftb.getPlayers())}`
 
         return msg;
 
@@ -265,12 +265,12 @@ class Responder {
 
     #playerAlreadyPresentMsg(_name) {
 
-        let msg = 
-        this.#firstLine +
-        `* 🟥 [${_name}] JÁ ESTÁ no 11 inicial!*\n` +
-        '!naovou para desistires\n' + 
-        '!naovai <nome> para mandar esse gajo para o banco\n' + 
-        '!help para veres tudo\n'
+        let msg =
+            this.#firstLine +
+            `* 🟥 [${_name}] JÁ ESTÁ no 11 inicial!*\n` +
+            '!naovou para desistires\n' +
+            '!naovai <nome> para mandar esse gajo para o banco\n' +
+            '!help para veres tudo\n'
 
         return msg;
 
@@ -289,11 +289,11 @@ class Responder {
 
     #endGameMsg() {
 
-        let msg = 
-        this.#firstLine +
-        '❗❗*PI, PI, PIIIIIIIIIIII!!!!!*❗❗\n\n' +
-        'Partida terminada!\n' +
-        '!futebolada para quando os nossos campeões estiverem em forma novamente\n'
+        let msg =
+            this.#firstLine +
+            '❗❗*PI, PI, PIIIIIIIIIIII!!!!!*❗❗\n\n' +
+            'Partida terminada!\n' +
+            '!futebolada para quando os nossos campeões estiverem em forma novamente\n'
 
         return msg;
 
@@ -301,16 +301,16 @@ class Responder {
 
     #noGameInProgressMsg() {
 
-        let msg = 
-        this.#firstLine +
-        '*Ainda não decorreu o sorteio. Nenhuma partida a decorrer neste momento*\n' +
-        '!futebolada para iniciar\n'
+        let msg =
+            this.#firstLine +
+            '*Ainda não decorreu o sorteio. Nenhuma partida a decorrer neste momento*\n' +
+            '!futebolada para iniciar\n'
 
         return msg;
 
     }
 
-    
+
     #initGameMsgs() {
 
         if (this.#ftb.gameIsInProgress()) {
@@ -326,50 +326,50 @@ class Responder {
     #gameAlreadyInProgressMsg() {
 
         let msg =
-        this.#firstLine +
-        '*Antes de começar a planear a próxima jornada é preciso jogar esta*\n\n' +
-        '!status para ver o atual plantel\n' + 
-        '!apitofinal para recomeçar de novo\n' +
-        '!help para tudo o resto\n'
+            this.#firstLine +
+            '*Antes de começar a planear a próxima jornada é preciso jogar esta*\n\n' +
+            '!status para ver o atual plantel\n' +
+            '!apitofinal para recomeçar de novo\n' +
+            '!help para tudo o resto\n'
 
         return msg;
     }
 
     #newGameMsg() {
         let msg =
-        this.#firstLine +
-        '*🚩 ESTÃO ABERTAS AS CONVOCATÓRIAS*\n\n' +
-        `*Dia:* ${this.#ftb.getDate()}\n` +
-        `*Hora:* ${this.#ftb.getTime()}\n` +
-        `*Estádio:* ${this.#ftb.getLocation()}\n\n` +
-        `*No. de Jogadores:* ${this.#ftb.getPlayersCount()}\n\n` +
-        `*Plantel:* ${this.#convertPlayersToMsgFormat(this.#ftb.getPlayers())}`
+            this.#firstLine +
+            '*🚩 ESTÃO ABERTAS AS CONVOCATÓRIAS*\n\n' +
+            `*Dia:* ${this.#ftb.getDate()}\n` +
+            `*Hora:* ${this.#ftb.getTime()}\n` +
+            `*Estádio:* ${this.#ftb.getLocation()}\n\n` +
+            `*No. de Jogadores:* ${this.#ftb.getPlayersCount()}\n\n` +
+            `*Plantel:* ${this.#convertPlayersToMsgFormat(this.#ftb.getPlayers())}`
 
         return msg;
     }
 
     #helpMsg() {
 
-        let helpMessage = 
-        this.#firstLine +
-        '❓ ❓ ❓\n' +
-        '*!futebolada* -> Começa a marcar a peladinha\n' +
-        '*!apitofinal* -> Limpa tudo para preparar a próxima jornada\n' +
-        '*!vou* -> Confirma a tua presença, campeão!\n' +
-        '*!naovou* -> Para quando sofreste uma lesão inesperada\n' +
-        '*!vai <nome>* -> Alguém a armar-se em conas? Aceita por ele\n' +
-        '*!naovai <nome>* -> Desmarca o mitra\n' +
-        '*!hora <hora>* -> Define a hora\n' +
-        '*!dia <dia>* -> Define o dia\n' +
-        '*!insulto <nome>* -> Manda mas é esse gajo foder\n' +
-        '*!status* -> Confere o plantel + info sobre a partida\n' +
-        '*!help* -> É literalmente isto otário. Chino no olho\n' + 
-        '❓ ❓ ❓\n'
-    
+        let helpMessage =
+            this.#firstLine +
+            '❓ ❓ ❓\n' +
+            '*!futebolada* -> Começa a marcar a peladinha\n' +
+            '*!apitofinal* -> Limpa tudo para preparar a próxima jornada\n' +
+            '*!vou* -> Confirma a tua presença, campeão!\n' +
+            '*!naovou* -> Para quando sofreste uma lesão inesperada\n' +
+            '*!vai <nome>* -> Alguém a armar-se em conas? Aceita por ele\n' +
+            '*!naovai <nome>* -> Desmarca o mitra\n' +
+            '*!hora <hora>* -> Define a hora\n' +
+            '*!dia <dia>* -> Define o dia\n' +
+            '*!insulto <nome>* -> Manda mas é esse gajo foder\n' +
+            '*!status* -> Confere o plantel + info sobre a partida\n' +
+            '*!help* -> É literalmente isto otário. Chino no olho\n' +
+            '❓ ❓ ❓\n'
+
         return helpMessage;
 
     }
-    
+
 
     #checkStatus() {
         if (!this.#ftb.gameIsInProgress()) {
@@ -383,14 +383,14 @@ class Responder {
     #currentStatusMsg() {
 
         let msg =
-        this.#firstLine +
-        '*<<< FUTEBOLADA >>>*\n\n' +
-        `*Dia:* ${this.#ftb.getDate()}\n` +
-        `*Hora:* ${this.#ftb.getTime()}\n` +
-        `*Estádio:* ${this.#ftb.getLocation()}\n\n` +
-        `*No. de Jogadores:* ${this.#ftb.getPlayersCount()}\n` +
-        `*Titulares:*\n${this.#convertPlayersToMsgFormat(this.#ftb.getPlayers())}` +
-        '\n'
+            this.#firstLine +
+            '*<<< FUTEBOLADA >>>*\n\n' +
+            `*Dia:* ${this.#ftb.getDate()}\n` +
+            `*Hora:* ${this.#ftb.getTime()}\n` +
+            `*Estádio:* ${this.#ftb.getLocation()}\n\n` +
+            `*No. de Jogadores:* ${this.#ftb.getPlayersCount()}\n` +
+            `*Titulares:*\n${this.#convertPlayersToMsgFormat(this.#ftb.getPlayers())}` +
+            '\n'
 
         return msg;
 
@@ -408,9 +408,9 @@ class Responder {
     #dateUpdatedMsg(_day) {
 
         let msg =
-        this.#firstLine +
-        `❗ *ATUALIZAÇÃO PLANO DE JOGO* ❗\n\n` +
-        `*Dia do kick-off*: ${_day}\n`
+            this.#firstLine +
+            `❗ *ATUALIZAÇÃO PLANO DE JOGO* ❗\n\n` +
+            `*Dia do kick-off*: ${_day}\n`
 
         return msg;
     }
@@ -428,13 +428,13 @@ class Responder {
     #hourUpdatedMsg(_hour) {
 
         let msg =
-        this.#firstLine +
-        `❗ *ATUALIZAÇÃO PLANO DE JOGO* ❗\n\n` +
-        `*Hora para kick-off*: ${_hour}\n`
+            this.#firstLine +
+            `❗ *ATUALIZAÇÃO PLANO DE JOGO* ❗\n\n` +
+            `*Hora para kick-off*: ${_hour}\n`
 
         return msg;
     }
-    
+
     #setLocationMsgs(_location) {
 
         if (!this.#ftb.gameIsInProgress()) {
@@ -449,9 +449,9 @@ class Responder {
     #locationUpdatedMsg(_location) {
 
         let msg =
-        this.#firstLine +
-        `❗ *ATUALIZAÇÃO PLANO DE JOGO* ❗\n\n` +
-        `*Estádio*: ${_location}\n`
+            this.#firstLine +
+            `❗ *ATUALIZAÇÃO PLANO DE JOGO* ❗\n\n` +
+            `*Estádio*: ${_location}\n`
 
         return msg;
 
@@ -470,8 +470,8 @@ class Responder {
         let randomInsult = insults[Math.floor(Math.random() * insults.length)];
 
         let msg =
-        this.#firstLine +
-        randomInsult
+            this.#firstLine +
+            randomInsult
 
         return msg;
 
@@ -481,12 +481,12 @@ class Responder {
     processMessage(_msg) {
 
         let firstWordLowerCase = _msg.text.split(' ')[0].toLowerCase();
-        
-        if (this.#ftb.acceptedCommands().includes(firstWordLowerCase)) {
-            
-            switch(firstWordLowerCase) {
 
-                case '!futebolada': 
+        if (this.#ftb.acceptedCommands().includes(firstWordLowerCase)) {
+
+            switch (firstWordLowerCase) {
+
+                case '!futebolada':
                     return this.#initGameMsgs();
 
                 case '!apitofinal':
@@ -538,4 +538,4 @@ class Responder {
     }
 }
 
-module.exports = {Futebolada, Responder};
+module.exports = { Futebolada, Responder };
