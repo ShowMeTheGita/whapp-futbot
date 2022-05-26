@@ -1,4 +1,3 @@
-// Required imports
 const venom = require('venom-bot');
 
 // Imports for custom created classes
@@ -6,10 +5,16 @@ const { Futebolada, Responder } = require("./classes.js");
 const ftb = new Futebolada(); 
 const rsp = new Responder(ftb);
 
-const whatsappChatsToRunIn = [
-  '351915226805-1555439720@g.us', // FutLolies
-  '34602256248@c.us' // Test chat
-]
+
+// Start the app
+// Send a message from your dummy number to your phone number after running the application for the first time
+// The console.log on line 31 will print the chat id that you need
+// Stop the app, uncomment/change the devChat value with the chat id, restart the app
+//
+//const devChat = ''
+
+//Test chat IDs:
+// My test chat -> '34602256248@c.us'
 
 
 venom
@@ -25,9 +30,9 @@ venom
 function start(client) {
   client.onMessage((message) => {
 
+    console.log(message.chatId)
 
-    if (whatsappChatsToRunIn.includes(message.sender.id) || whatsappChatsToRunIn.includes(message.chat.id) ) {
-
+    if (message.sender.id === devChat) {
       client
         .sendText(message.from, rsp.processMessage(message))
         .then((result) => {
@@ -41,6 +46,5 @@ function start(client) {
 
 
 }
-
 
 
