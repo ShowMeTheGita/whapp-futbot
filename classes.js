@@ -99,7 +99,7 @@ class Futebolada {
 
         // Reorder this.#players keys
         for (let i = playerNumber; i < Object.keys(this.#players).length; i++) {
-	        Object.defineProperty(this.#players, i, Object.getOwnPropertyDescriptor(this.#players, i+1));
+	        Object.defineProperty(this.#players, i, Object.getOwnPropertyDescriptor(this.#players, parseInt(i)+1));
         }
 
         // remove the last index after reordering
