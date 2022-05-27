@@ -70,7 +70,7 @@ class Futebolada {
             'location': this.#location,
             'players': this.#players,
             'playersCount': this.playersCount
-        })
+        }, null, 4)
 
         fs.writeFileSync('./game-state.json', gameState);
 
@@ -104,7 +104,7 @@ class Futebolada {
 
     setLocation(_location) {
         this.#location = _location;
-        this.saveGame();
+        this.#saveGame();
     }
 
     getLocation() {
@@ -126,7 +126,7 @@ class Futebolada {
             this.#players[1] = _playerName;
             this.#playersCount = Object.keys(this.#players).length;
         } else {
-            let newPlayerNum = this.#playersCount + 1
+            let newPlayerNum = parseInt(this.#playersCount + 1);
             this.#players[newPlayerNum] = _playerName;
             this.#playersCount++;
         }
