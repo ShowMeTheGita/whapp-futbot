@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 class Futebolada {
 
     #gameInProgress;
@@ -27,7 +29,7 @@ class Futebolada {
 
 
     constructor() {
-        this.#reset();
+        this.#loadGame();
     }
 
     #reset() {
@@ -37,6 +39,41 @@ class Futebolada {
         this.#location = this.#tba;
         this.#playersCount = 0;
         this.#players = {};
+    }
+
+    #loadGame() {
+
+        if (fs.existsSync('./game-state.json')) {
+
+            let savedGameJson = fs.readFileSync('./game-state.json').toString();
+            let savedGameObj = JSON.parse(savedGameJson);
+
+            this.#date = savedGameObj['date'];
+            this.#time = savedGameObj['time'];
+            this.#location = savedGameObj['location'];
+            this.#players = savedGameObj['players'];
+            this.#playersCount = savedGameObj['playersCount'];
+
+            this.#gameInProgress = true;
+
+        } else {
+            this.#reset();
+        }
+        
+    }
+
+    #saveGame() {
+
+        const gameState = JSON.stringify({
+            'date': this.#date,
+            'time': this.#time,
+            'location': this.#location,
+            'players': this.#players,
+            'playersCount': this.#playersCount
+        }, null, 4)
+
+        fs.writeFileSync('./game-state.json', gameState);
+
     }
 
     gameIsInProgress() {
@@ -49,6 +86,7 @@ class Futebolada {
 
     setDate(_date) {
         this.#date = _date;
+        this.#saveGame();
     }
 
     getDate() {
@@ -57,6 +95,7 @@ class Futebolada {
 
     setTime(_time) {
         this.#time = _time;
+        this.#saveGame();
     }
 
     getTime() {
@@ -65,6 +104,7 @@ class Futebolada {
 
     setLocation(_location) {
         this.#location = _location;
+        this.#saveGame();
     }
 
     getLocation() {
@@ -86,10 +126,12 @@ class Futebolada {
             this.#players[1] = _playerName;
             this.#playersCount = Object.keys(this.#players).length;
         } else {
-            let newPlayerNum = this.#playersCount + 1
+            let newPlayerNum = parseInt(this.#playersCount + 1);
             this.#players[newPlayerNum] = _playerName;
             this.#playersCount++;
         }
+
+        this.#saveGame();
 
     }
 
@@ -106,6 +148,8 @@ class Futebolada {
         delete this.#players[Object.keys(this.#players).length];
         this.#playersCount--;
 
+        this.#saveGame();
+
     }
 
 
@@ -115,6 +159,7 @@ class Futebolada {
             this.#gameInProgress = true;
         } else {
             this.#reset();
+            fs.unlinkSync('./game-state.json');
         }
 
     }
