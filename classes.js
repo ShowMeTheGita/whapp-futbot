@@ -69,7 +69,7 @@ class Futebolada {
             'time': this.#time,
             'location': this.#location,
             'players': this.#players,
-            'playersCount': this.playersCount
+            'playersCount': this.#playersCount
         }, null, 4)
 
         fs.writeFileSync('./game-state.json', gameState);
