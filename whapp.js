@@ -9,18 +9,17 @@ const sessionPath = `${tokensDir}/${sesName}.json`
 class Whatsapp {
 
     #rsp;
-    #chat;
+    #devChat;
 
     constructor(_rsp, _chat) {
         this.#rsp = _rsp;
-        this.#chat = _chat;
-    } 
+        this.#devChat = _chat;
+    }
+
 
     async connect() {
 
         let client;
-        let browserSessionToken = this.#readToken();
-
 
         try {
             client = await venom.create(
@@ -46,26 +45,29 @@ class Whatsapp {
                     multidevice: true,
                     disableWelcome: true,
                     folderNameToken: 'tokens',
-                    mkdirFolderToken:'./tokens',
+                    mkdirFolderToken:'./data/app',
                     createPathFileToken: true,
                     disableSpins: true,
-                    headless: true,
+                    headless: true
                 },
-                browserSessionToken
+
             )
             this.#runBot(client)
         } catch (error) {
             console.log(error)
         }
 
+
+
     }
 
 
     async #runBot(_client) {
 
+
          _client.onMessage((message) => {
 
-            if (message.sender.id === this.#chat) {
+            if (message.sender.id === this.#devChat) {
             _client
                 .sendText(message.from, this.#rsp.processMessage(message))
                 .then((result) => {
@@ -77,7 +79,9 @@ class Whatsapp {
             }
         });
 
+
     }
+
 
 }
 
