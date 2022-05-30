@@ -9,7 +9,7 @@ const { Whatsapp } = require('./whapp.js');
 
 // My devchat 34602256248@c.us
 // Change the value of devChat to one from your testing number
-const devChat = '';
+const devChat = '34602256248@c.us';
 const ftb = new Futebolada();
 const rsp = new Responder(ftb);
 const whapp = new Whatsapp(rsp, devChat);
