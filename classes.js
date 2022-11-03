@@ -406,6 +406,7 @@ class Responder {
             '*!naovai <nome>* -> Desmarca o mitra\n' +
             '*!hora <hora>* -> Define a hora\n' +
             '*!dia <dia>* -> Define o dia\n' +
+            '*!campo <campo>* -> Define o local\n' +
             '*!insulto <nome>* -> Manda mas é esse gajo foder\n' +
             '*!status* -> Confere o plantel + info sobre a partida\n' +
             '*!help* -> É literalmente isto otário. Chino no olho\n' +
