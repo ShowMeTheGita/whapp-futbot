@@ -9,7 +9,7 @@ class Whatsapp {
 
     constructor(_rsp, _chat) {
         this.#rsp = _rsp;
-        this.#devChat = _chat;
+        this.#chat = _chat;
     }
 
     prepare(){
@@ -26,9 +26,7 @@ class Whatsapp {
             console.log(message)
             console.log(message.body)
 
-            if (message.from === this.#devChat || message.from === '120363029363326355@g.us') {
-                //message.reply("this is a reply")
-                //this.#client.sendMessage(message.from, "this is a message")
+            if (message.from === this.#chat) {
                 this.#client.sendMessage(message.from, this.#rsp.processMessage(message.body, message._data.notifyName), )
             }
 
@@ -39,7 +37,7 @@ class Whatsapp {
 
     #setupClient() {
 
-        let auth = new LocalAuth('/home/guilherme/Desktop/git-repos/whapp-futbot/.wwebjs_auth');
+        let auth = new LocalAuth('./wwebjs_auth');
         console.log(auth);
 
         this.#client = new Client({
