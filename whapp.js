@@ -4,7 +4,7 @@ const { Client , LocalAuth } = require('whatsapp-web.js');
 class Whatsapp {
 
     #rsp;
-    #devChat;
+    #chat;
     #client
 
     constructor(_rsp, _chat) {
