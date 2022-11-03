@@ -42,6 +42,9 @@ class Whatsapp {
 
         this.#client = new Client({
             authStrategy: auth,
+            puppeteer: {
+                args: ['--no-sandbox'],
+            }
         });
    
         this.#client.initialize();
