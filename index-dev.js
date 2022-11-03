@@ -14,5 +14,6 @@ const ftb = new Futebolada();
 const rsp = new Responder(ftb);
 const whapp = new Whatsapp(rsp, devChat);
 
+whapp.prepare()
 whapp.run();
 
