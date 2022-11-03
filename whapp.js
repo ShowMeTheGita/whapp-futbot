@@ -23,7 +23,7 @@ class Whatsapp {
     run() {
 
         this.#client.on('message', (message) => {
-            console.log(message)
+            //console.log(message)
             console.log(message.body)
 
             if (message.from === this.#chat) {
