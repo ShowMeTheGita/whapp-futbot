@@ -1,1 +1,7 @@
 node_modules
+
+# Avoid saving game states
+./game-state.json
+
+# Avoid saving whatsapp web tokens
+./wwebjs_auth/*

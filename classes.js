@@ -523,13 +523,14 @@ class Responder {
     }
 
 
-    processMessage(_msg) {
+    processMessage(_msgBody, _sender) {
 
-        let firstWordLowerCase = _msg.text.split(' ')[0].toLowerCase();
+        let sanitizedCommand = _msgBody.split(' ')[0].toLowerCase();
+        let sanitizedMessage = this.#removeFirstWord(_msgBody)
 
-        if (this.#ftb.acceptedCommands().includes(firstWordLowerCase)) {
+        if (this.#ftb.acceptedCommands().includes(sanitizedCommand)) {
 
-            switch (firstWordLowerCase) {
+            switch (sanitizedCommand) {
 
                 case '!futebolada':
                     return this.#initGameMsgs();
@@ -538,20 +539,16 @@ class Responder {
                     return this.#finishGameMsgs();
 
                 case '!vou':
-                    let ownPlayerToAdd = _msg.sender.pushname;
-                    return this.#playerGoingMsgs(ownPlayerToAdd);
+                    return this.#playerGoingMsgs(_sender);
 
                 case '!naovou':
-                    let ownPlayerToRemove = _msg.sender.pushname;
-                    return this.#playerNotGoingMsgs(ownPlayerToRemove);
+                    return this.#playerNotGoingMsgs(_sender);
 
                 case '!vai':
-                    let playerToAdd = this.#removeFirstWord(_msg.content);
-                    return this.#playerGoingMsgs(playerToAdd);
+                    return this.#playerGoingMsgs(sanitizedMessage);
 
                 case '!naovai':
-                    let playerToRemove = this.#removeFirstWord(_msg.content);
-                    return this.#playerNotGoingMsgs(playerToRemove);
+                    return this.#playerNotGoingMsgs(sanitizedMessage);
 
                 case '!help':
                     return this.#helpMsg();
@@ -560,21 +557,16 @@ class Responder {
                     return this.#checkStatus();
 
                 case '!hora':
-                    let hour = this.#removeFirstWord(_msg.content);
-                    return this.#setHourMsgs(hour);
+                    return this.#setHourMsgs(sanitizedMessage);
 
                 case '!dia':
-                    let day = this.#removeFirstWord(_msg.content);
-                    return this.#setDayMsgs(day);
+                    return this.#setDayMsgs(sanitizedMessage);
 
                 case '!campo':
-                    let location = this.#removeFirstWord(_msg.content);
-                    return this.#setLocationMsgs(location);
+                    return this.#setLocationMsgs(sanitizedMessage);
 
                 case '!insulto':
-                    let attacker = _msg.sender.pushname;
-                    let insulted = this.#removeFirstWord(_msg.content);
-                    return this.#insultSomeoneMsg(attacker, insulted);
+                    return this.#insultSomeoneMsg(_sender, sanitizedMessage);
 
             }
 
