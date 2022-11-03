@@ -11,7 +11,9 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "minimist": ">=1.2.6",
+    "qrcode-terminal": "^0.12.0",
     "venom-bot": "^4.0.11",
-    "minimist": ">=1.2.6"
+    "whatsapp-web": "^1.0.3"
   }
 }
